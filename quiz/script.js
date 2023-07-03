@@ -2,8 +2,10 @@ const cor = document.getElementById("cor");
 const btn1 = document.getElementById("btn1");
 const btn2 = document.getElementById("btn2");
 const btn3 = document.getElementById("btn3");
-let arrayOrders = [0, 1, 2];
-let arrayCores = [
+const h1Timer = document.getElementById("timer");
+const pScore = document.getElementById('score');
+const arrayOrders = [0, 1, 2];
+const arrayCores = [
   "Red",
   "Yellow",
   "Green",
@@ -18,8 +20,24 @@ let arrayCores = [
 btn1.style.order = arrayOrders[0];
 btn2.style.order = arrayOrders[1];
 btn3.style.order = arrayOrders[2];
+let pontos = 30;
+function corAleatoria() {
+  return arrayCores[Math.floor(Math.random() * arrayCores.length)];
+}
 
 const main = () => {
+  let cont = 2;
+  let intervalo = setInterval(()=>{
+    h1Timer.innerHTML = cont;
+    cont--;
+    pontos -= 10;
+    console.log(pontos);
+  },1000)
+  let timer = setTimeout(()=>{
+    clearInterval(intervalo)
+    youLose();
+
+  },3000)
   let arrayValores = [
     corAleatoria(),
     corAleatoria(),
@@ -45,20 +63,45 @@ const main = () => {
   btn2.innerHTML = arrayValores[1];
   btn3.innerHTML = arrayValores[2];
 
+  function youLose(){
+    clearInterval(intervalo);
+    clearTimeout(timer);
+    cor.innerHTML = "Você perdeu";
+    cor.style.color = "red";
+    btn2.style.display = "none";
+    btn1.innerHTML = "Jogar novamente";
+    btn3.innerHTML = "ver Ranking";
+    btn1.style.backgroundColor = "blue";
+    btn3.style.backgroundColor = "blue";
+    pScore.innerHTML = `Total de pontos = ${pontos}`;
+    btn3.addEventListener('click',()=>{
+      window.location.href = "/quiz/ranking.html";
+    });
+  
+    btn1.addEventListener('click',()=>{
+      btn2.style.display = "flex";
+      btn1.style.backgroundColor = "black";
+      btn2.style.backgroundColor = "black";
+      btn3.style.backgroundColor = "black";
+      pScore.innerHTML = "";
+      main();
+    });
+    
+  }
+
   btn2.addEventListener('click',()=>{
+    clearTimeout(timer);
+    cont = 3;
+    pontos = pontos * 5;
+    console.log(pontos);
     main();
   })
   btn1.addEventListener('click',()=>{
-    //perder
+    youLose();
   });
-  btn1.addEventListener('click',()=>{
-    //perder
+  btn3.addEventListener('click',()=>{
+    youLose();
   });
 };
-main();
-function corAleatoria() {
-  return arrayCores[Math.floor(Math.random() * arrayCores.length)];
-}
 
-//verificar cores: nome da cor precisa aparecer em um botao, cor da fonte precisa aparecer em outro botao,
-//e uma cor aleatoria no último botão
+main();
