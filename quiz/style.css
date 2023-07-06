@@ -8,10 +8,11 @@ body{
 }
 .conteudo{
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     min-height: 100vh;
     gap: 3rem;
+    font-size: large;
 }
 .flex{
     display: flex;
@@ -41,4 +42,7 @@ body{
 }
 .botao:hover{
     transform: scale(1.1);
+}
+.basegio{
+    width: 80%;
 }
